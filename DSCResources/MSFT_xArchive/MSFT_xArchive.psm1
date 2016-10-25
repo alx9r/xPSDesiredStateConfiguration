@@ -78,7 +78,15 @@ data LocalizedData
 
 Import-Module "$PSScriptRoot\..\CommonResourceHelper.psm1"
 
-$script:cacheLocation = "$env:systemRoot\system32\Configuration\BuiltinProvCache\MSFT_ArchiveResource"
+if ( [System.Security.Principal.WindowsIdentity]::GetCurrent().Name -eq
+     'NT AUTHORITY\SYSTEM' )
+{
+    $script:cacheLocation = "$env:systemRoot\system32\Configuration\BuiltinProvCache\MSFT_ArchiveResource"
+}
+else
+{
+    $script:cacheLocation = "$env:USERPROFILE\Documents\WindowsPowerShell\Configuration\BuiltinProvCache\MSFT_ArchiveResource"
+}
 
 function Get-TargetResource
 {
